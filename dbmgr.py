@@ -26,7 +26,7 @@ class DB(object):
         '''
         try:
             if db_name != None:
-              self.db_name = db_name
+                self.db_name = db_name
             self.connect = sqlite3.connect(self.db_name)
             # 链接数据库
             self.cursor = self.connect.cursor()
@@ -51,7 +51,8 @@ class DB(object):
         语句转换：fields = {'id':'int PRIMARY KEY', 'name':'varchar(100)'}
         转换结果 args = "id int PRIMARY KEY, name varchar(100)"
         '''
-
+        # 建表语句可以修改为：CREATE TABLE IF NOT EXISTS 表名 (字段1名 字段1类型, 字段2名 字段2类型);. 可以不使用查表的方式判断表是否已经建立
+        # 详细语句如下：
         if self.check_table(table_name)[0][0] == 0:
 
             create_sql = u'CREATE TABLE %s(%s);'
@@ -89,7 +90,7 @@ class DB(object):
         参数：
         table_name：表名称
         返回值：
-        result：查询结果，当结果又记录时说明表已经存在
+        result：查询结果，当结果有记录时说明表已经存在
         '''
         check_sql = u"SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = '%s';" % table_name
         result = self.execute_sql(check_sql)
